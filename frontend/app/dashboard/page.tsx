@@ -17,7 +17,7 @@ export default function DashboardPage() {
         <div className="container flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-2 font-bold">
             <ShoppingCart className="h-6 w-6 text-green-600" />
-            <span className="text-xl">SaverCart</span>
+            <span className="text-xl">Grocer Compare</span>
           </div>
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon">

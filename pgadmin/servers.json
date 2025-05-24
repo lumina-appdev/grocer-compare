@@ -1,0 +1,14 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "Grocer Compare DB",
+      "Group": "Servers",
+      "Host": "pgdb",
+      "Port": 5432,
+      "MaintenanceDB": "grocer_compare",
+      "Username": "appuser",
+      "SSLMode": "prefer",
+      "PassFile": "/pgpass"
+    }
+  }
+}

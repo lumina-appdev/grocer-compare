@@ -1,0 +1,69 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: pgdb
+    environment:
+      POSTGRES_DB: grocer_compare
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+      - ./pgadmin/servers.json:/pgadmin4/servers.json
+      - ./pgadmin/pgpass:/pgpass
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        echo "pgdb:5432:grocer_compare:appuser:secret" > /pgpass
+        chmod 600 /pgpass
+        /entrypoint.sh
+
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/app
+      - ~/.m2:/root/.m2  # 使用主机上的 Maven 缓存加速构建
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://pgdb:5432/grocer_compare
+      SPRING_DATASOURCE_USERNAME: appuser
+      SPRING_DATASOURCE_PASSWORD: secret
+    depends_on:
+      - postgres
+    command: ["./mvnw", "spring-boot:run"]  # 热更新方式运行
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080/api
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+  pgadmin-data:

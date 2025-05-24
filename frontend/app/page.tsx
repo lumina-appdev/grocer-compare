@@ -26,7 +26,7 @@ export default function LandingPage() {
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2 font-bold">
             <ShoppingCart className="h-6 w-6 text-green-600" />
-            <span className="text-xl">SaverCart</span>
+            <span className="text-xl">Grocer Compare</span>
           </div>
           <nav className="hidden md:flex gap-6">
             <Link href="#comparison" className="text-sm font-medium hover:underline underline-offset-4">
