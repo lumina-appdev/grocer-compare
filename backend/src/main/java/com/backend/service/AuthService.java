@@ -8,27 +8,27 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     public AuthService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = new BCryptPasswordEncoder(); // 或者从配置中注入
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     public void signup(SignupRequest request) {
-        if (userRepository.findByEmail(request.email).isPresent()) {
+        // Check if email already exists
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new RuntimeException("Email already registered");
         }
 
+        // Create user
         User user = new User();
-        user.setFirstName(request.firstName);
-        user.setLastName(request.lastName);
-        user.setEmail(request.email);
-        user.setPassword(passwordEncoder.encode(request.password));
-        user.setPostcode(request.postcode);
-        user.setAgreedToTerms(request.agreedToTerms);
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword())); // hash password
+        user.setPostcode(request.getPostcode());
 
         userRepository.save(user);
     }

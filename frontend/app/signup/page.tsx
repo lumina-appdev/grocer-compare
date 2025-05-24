@@ -40,6 +40,7 @@ export default function SignupPage() {
 
     try {
       await axios.post("http://localhost:8080/api/signup", form)
+      console.log("Signup successful")
       router.push("/dashboard")
     } catch (err) {
       console.error("Signup failed", err)
@@ -55,7 +56,7 @@ export default function SignupPage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 font-bold text-2xl">
             <ShoppingCart className="h-8 w-8 text-green-600" />
-            <span>SaverCart</span>
+            <span>Grocer Compare</span>
           </Link>
           <p className="text-muted-foreground mt-2">Create your account and start saving money</p>
         </div>
@@ -69,21 +70,21 @@ export default function SignupPage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="firstName">First Name</Label>
-                <Input id="firstName" value={form.firstName} onChange={handleChange} placeholder="John" />
+                <Input id="firstName" value={form.firstName} onChange={handleChange} placeholder="" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lastName">Last Name</Label>
-                <Input id="lastName" value={form.lastName} onChange={handleChange} placeholder="Smith" />
+                <Input id="lastName" value={form.lastName} onChange={handleChange} placeholder="" />
               </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={form.email} onChange={handleChange} placeholder="john@example.com" />
+              <Input id="email" type="email" value={form.email} onChange={handleChange} placeholder="" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
-                <Input id="password" type={showPassword ? "text" : "password"} value={form.password} onChange={handleChange} placeholder="Create a strong password" />
+                <Input id="password" type={showPassword ? "text" : "password"} value={form.password} onChange={handleChange} placeholder="" />
                 <Button
                   type="button"
                   variant="ghost"
@@ -99,7 +100,7 @@ export default function SignupPage() {
               <Label htmlFor="postcode">Postcode</Label>
               <div className="relative">
                 <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input id="postcode" placeholder="2000" value={form.postcode} onChange={handleChange} className="pl-10" />
+                <Input id="postcode" placeholder="" value={form.postcode} onChange={handleChange} className="pl-10" />
               </div>
               <p className="text-xs text-muted-foreground">We'll show you prices for stores in your area</p>
             </div>
@@ -122,13 +123,11 @@ export default function SignupPage() {
                 </Link>
               </Label>
             </div>
-            <Link href="/dashboard">
-              <form onSubmit={handleSubmit} className="w-full">
-                <Button type="submit" className="w-full bg-green-600 hover:bg-green-700">
-                  Create Account
-                </Button>
-              </form>
-            </Link>
+            <form onSubmit={handleSubmit} className="w-full">
+              <Button type="submit" className="w-full bg-green-600 hover:bg-green-700">
+                Create Account
+              </Button>
+            </form>
             <div className="text-center text-sm">
               Already have an account?{" "}
               <Link href="/login" className="text-green-600 hover:underline">

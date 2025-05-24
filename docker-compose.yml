@@ -3,7 +3,7 @@ services:
     image: postgres:15
     container_name: pgdb
     environment:
-      POSTGRES_DB: appdb
+      POSTGRES_DB: grocer_compare
       POSTGRES_USER: appuser
       POSTGRES_PASSWORD: secret
     ports:
@@ -29,7 +29,7 @@ services:
       - /bin/sh
       - -c
       - |
-        echo "pgdb:5432:appdb:appuser:secret" > /pgpass
+        echo "pgdb:5432:grocer_compare:appuser:secret" > /pgpass
         chmod 600 /pgpass
         /entrypoint.sh
 
@@ -43,7 +43,7 @@ services:
       - ./backend:/app
       - ~/.m2:/root/.m2  # 使用主机上的 Maven 缓存加速构建
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://pgdb:5432/appdb
+      SPRING_DATASOURCE_URL: jdbc:postgresql://pgdb:5432/grocer_compare
       SPRING_DATASOURCE_USERNAME: appuser
       SPRING_DATASOURCE_PASSWORD: secret
     depends_on:

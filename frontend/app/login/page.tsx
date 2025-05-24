@@ -17,7 +17,7 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 font-bold text-2xl">
             <ShoppingCart className="h-8 w-8 text-green-600" />
-            <span>SaverCart</span>
+            <span>Grocer Compare</span>
           </Link>
           <p className="text-muted-foreground mt-2">Welcome back! Sign in to your account</p>
         </div>
