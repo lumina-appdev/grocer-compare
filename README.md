@@ -23,3 +23,11 @@ Second, run the backend:
 
 ./mvnw spring-boot:run
 ```
+
+## Using Docker is faster
+
+```bash
+docker compose down
+docker compose build --no-cache
+docker compose up
+```

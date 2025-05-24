@@ -1,15 +1,44 @@
 "use client"
 
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { ShoppingCart, Search, Plus, DollarSign, Bell, User, Settings, LogOut } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import jwtDecode from "jwt-decode"
+
+type JwtPayload = {
+  sub: string // email
+  name?: string // if you include it in the token
+  exp: number
+}
 
 export default function DashboardPage() {
   const [searchQuery, setSearchQuery] = useState("")
+  const [userName, setUserName] = useState("")
+  const router = useRouter()
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      router.push("/login")
+    } else {
+      try {
+        const decoded = jwtDecode<JwtPayload>(token)
+        // optional: fetch full user details from backend here
+        setUserName(decoded.name || decoded.sub.split("@")[0]) // use email prefix as fallback
+      } catch (err) {
+        console.error("Invalid token", err)
+        router.push("/login")
+      }
+    }
+  }, [])
+  
+  if (!userName) {
+    return <div className="p-8 text-center text-muted-foreground">Loading your dashboard...</div>
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -27,22 +56,27 @@ export default function DashboardPage() {
               <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
                 <User className="h-4 w-4 text-green-600" />
               </div>
-              <span className="text-sm font-medium">John Smith</span>
+              <span className="text-sm font-medium">{userName}</span>
             </div>
             <Button variant="ghost" size="icon">
               <Settings className="h-5 w-5" />
             </Button>
-            <Link href="/">
-              <Button variant="ghost" size="icon">
-                <LogOut className="h-5 w-5" />
-              </Button>
-            </Link>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => {
+                localStorage.removeItem("token")
+                router.push("/login")
+              }}
+            >
+              <LogOut className="h-5 w-5" />
+            </Button>
           </div>
         </div>
       </header>
       <main className="container px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Welcome back, John!</h1>
+          <h1 className="text-3xl font-bold mb-2">Welcome back, {userName}!</h1>
           <p className="text-muted-foreground">Here's your personalized grocery comparison dashboard</p>
         </div>
 

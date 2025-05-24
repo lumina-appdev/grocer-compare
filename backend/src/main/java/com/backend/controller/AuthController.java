@@ -24,8 +24,8 @@ public class AuthController {
         }
 
         try {
-            authService.signup(request);
-            return ResponseEntity.ok().build();
+            String token = authService.signup(request);
+            return ResponseEntity.ok(Map.of("token", token));
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().body(Map.of("message", ex.getMessage()));
         }
