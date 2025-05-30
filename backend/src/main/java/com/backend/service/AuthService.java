@@ -10,13 +10,15 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthService(UserRepository userRepository) {
+    public AuthService(UserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
-    public void signup(SignupRequest request) {
+    public String signup(SignupRequest request) {
         // Check if email already exists
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new RuntimeException("Email already registered");
@@ -31,5 +33,7 @@ public class AuthService {
         user.setPostcode(request.getPostcode());
 
         userRepository.save(user);
+
+        return jwtService.generateToken(request.getEmail());
     }
 }

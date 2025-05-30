@@ -272,7 +272,7 @@ export default function LandingPage() {
             <span className="text-xl">SaverCart</span>
           </div>
           <p className="text-center text-sm text-muted-foreground md:text-left">
-            &copy; {new Date().getFullYear()} SaverCart Australia. All rights reserved.
+            &copy; {new Date().getFullYear()} Lumina Dev. All rights reserved.
           </p>
           <div className="flex gap-4">
             <Link href="#" className="text-sm font-medium hover:underline underline-offset-4">

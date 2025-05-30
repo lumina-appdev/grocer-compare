@@ -5,14 +5,14 @@ services:
     environment:
       POSTGRES_DB: grocer_compare
       POSTGRES_USER: appuser
-      POSTGRES_PASSWORD: secret
+      POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
   pgadmin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:latest
     container_name: pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
@@ -29,7 +29,7 @@ services:
       - /bin/sh
       - -c
       - |
-        echo "pgdb:5432:grocer_compare:appuser:secret" > /pgpass
+        echo "pgdb:5432:grocer_compare:appuser:password" > /pgpass
         chmod 600 /pgpass
         /entrypoint.sh
 
@@ -45,7 +45,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://pgdb:5432/grocer_compare
       SPRING_DATASOURCE_USERNAME: appuser
-      SPRING_DATASOURCE_PASSWORD: secret
+      SPRING_DATASOURCE_PASSWORD: password
     depends_on:
       - postgres
     command: ["./mvnw", "spring-boot:run"]  # 热更新方式运行

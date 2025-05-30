@@ -39,8 +39,11 @@ export default function SignupPage() {
     }
 
     try {
-      await axios.post("http://localhost:8080/api/signup", form)
+      const response = await axios.post("http://localhost:8080/api/signup", form);
       console.log("Signup successful")
+
+      const token = response.data.token;
+      localStorage.setItem("token", token); // store token
       router.push("/dashboard")
     } catch (err) {
       console.error("Signup failed", err)
